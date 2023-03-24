@@ -2,12 +2,15 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { useSearchParams } from "next/navigation";
 
 export default function SearchBar() {
   const router = useRouter();
+
   const [location, setLocation] = useState("");
+
   const handleSearch = () => {
-    router.push("/search");
+    router.push("/search" + "?location=" + location);
   };
 
   return (
