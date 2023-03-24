@@ -1,14 +1,15 @@
-import { RestaurantCardType } from "@/app/page";
 import Link from "next/link";
 import RestaurantCardPrice from "./CardPrice";
+import { Cuisine, Location, Restaurant } from "@prisma/client";
 
 interface Props {
-  restaurant: RestaurantCardType;
+  restaurant: Restaurant & {
+    cuisine: Cuisine;
+    location: Location;
+  };
 }
 
-export default function RestaurantCard(props: Props) {
-  const restaurant = props.restaurant;
-
+export default function RestaurantCard({ restaurant }: Props) {
   return (
     <Link
       href={`/restaurant/${restaurant.slug}`}
