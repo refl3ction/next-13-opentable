@@ -4,6 +4,7 @@ import SearchSidebar from "@/components/Search/Sidebar";
 import { getCuisines } from "@/lib/data/cuisine";
 import { getLocations } from "@/lib/data/location";
 import { getRestaurantsBy } from "@/lib/data/restaurant";
+import { PRICE } from "@prisma/client";
 
 export const metadata = {
   title: "Search Tables | OpenTable",
@@ -13,10 +14,10 @@ export const metadata = {
 export default async function Page({
   searchParams,
 }: {
-  searchParams: { location: string; cuisine: string };
+  searchParams: { location?: string; cuisine?: string; price?: PRICE };
 }) {
-  const { location, cuisine } = searchParams;
-  const restaurants = await getRestaurantsBy({ location, cuisine });
+  const { location, cuisine, price } = searchParams;
+  const restaurants = await getRestaurantsBy({ location, cuisine, price });
   const locations = await getLocations();
   const cuisines = await getCuisines();
 
@@ -24,8 +25,12 @@ export default async function Page({
     <>
       <SearchHeader />
       <div className="flex py-4 m-auto w-2/3 justify-between items-start">
-        <SearchSidebar locations={locations} cuisines={cuisines} />
-        <div className="w-5/6">
+        <SearchSidebar
+          searchParams={searchParams}
+          locations={locations}
+          cuisines={cuisines}
+        />
+        <div className="w-5/6 ml-5">
           {restaurants.length === 0 && <>No restaurants found</>}
           {restaurants.map((restaurant) => {
             return <SearchCard key={restaurant.id} restaurant={restaurant} />;

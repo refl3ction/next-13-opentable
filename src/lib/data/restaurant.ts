@@ -1,4 +1,4 @@
-import { Cuisine, Location, Restaurant } from "@prisma/client";
+import { Cuisine, Location, PRICE, Restaurant } from "@prisma/client";
 import db from "./db";
 
 export async function getRestaurants(): Promise<
@@ -19,8 +19,8 @@ export async function getRestaurants(): Promise<
 export const getRestaurantsBy = async (query: {
   location?: string;
   cuisine?: string;
+  price?: PRICE;
 } = { location: "", cuisine: "" }) => {
-  console.log("Query: ", query);
   const select = {
     id: true,
     name: true,
@@ -32,7 +32,7 @@ export const getRestaurantsBy = async (query: {
     slug: true,
   };
 
-  let where: { location?: any; cuisine?: any } = {};
+  let where: any = {};
   if (query.location && query.location !== "") {
     where.location = {
       name: {
@@ -47,6 +47,10 @@ export const getRestaurantsBy = async (query: {
         contains: query.cuisine.toLowerCase(),
       },
     };
+  }
+
+  if (query.price) {
+    where.price = query.price;
   }
 
   const restaurants = await db.restaurant.findMany({
