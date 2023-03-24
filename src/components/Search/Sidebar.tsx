@@ -1,30 +1,11 @@
-import { PrismaClient } from "@prisma/client";
 import Link from "next/link";
 
-const prisma = new PrismaClient();
+interface Props {
+  locations: { name: string }[];
+  cuisines: { name: string }[];
+}
 
-const fetchLocations = async () => {
-  const locations = await prisma.location.findMany({
-    select: {
-      name: true,
-    },
-  });
-  return locations;
-};
-
-const fetchCuisines = async () => {
-  const cuisines = await prisma.cuisine.findMany({
-    select: {
-      name: true,
-    },
-  });
-  return cuisines;
-};
-
-export default async function SearchSidebar() {
-  const locations = await fetchLocations();
-  const cuisines = await fetchCuisines();
-
+export default function SearchSidebar({ locations, cuisines }: Props) {
   return (
     <div className="w-1/5">
       <div className="border-b pb-4">
