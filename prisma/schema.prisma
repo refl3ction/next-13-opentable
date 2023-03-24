@@ -19,13 +19,8 @@ model Restaurant {
     open_time   String
     close_time  String
     slug        String   @unique
-    // address     String
-    // city        String
-    // state       String
-    // zip         String
-    // cuisine     String
     price       PRICE
-    Item        Item[]
+    items       Item[]
     location_id Int
     location    Location @relation(fields: [location_id], references: [id])
     cuisine_id  Int
