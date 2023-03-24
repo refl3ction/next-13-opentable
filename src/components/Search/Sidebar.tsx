@@ -57,7 +57,7 @@ export default function SearchSidebar({
           );
         })}
       </div>
-      <div className="mt-3 pb-4">
+      <div className="border-b mt-3 pb-4">
         <h1 className="mb-2">Price</h1>
         <div className="flex">
           {prices.map((price) => {
@@ -73,6 +73,19 @@ export default function SearchSidebar({
               </Link>
             );
           })}
+        </div>
+      </div>
+      <div className="mt-3 pb-4">
+        <div className="flex">
+          <Link
+            href={{
+              pathname: "/search",
+              query: {},
+            }}
+            className="border w-full text-reg text-center font-light p-2 hover:bg-gray-100"
+          >
+            <p className="font-bold">Clear Filters</p>
+          </Link>
         </div>
       </div>
     </div>
