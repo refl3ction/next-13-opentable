@@ -4,6 +4,10 @@ import { getRestaurants } from "@/lib/data/restaurant";
 
 export default async function HomePage() {
   const restaurants = await getRestaurants();
+  for (const r of restaurants) {
+    console.log("r:", r.reviews);
+  }
+
   return (
     <main>
       <Header></Header>

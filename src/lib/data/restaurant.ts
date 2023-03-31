@@ -1,37 +1,30 @@
-import { Cuisine, Location, PRICE, Restaurant } from "@prisma/client";
+import { Cuisine, Location, PRICE, Restaurant, Review } from "@prisma/client";
 import db from "./db";
 
 export async function getRestaurants(): Promise<
   (Restaurant & {
     cuisine: Cuisine;
     location: Location;
+    reviews: Review[];
   })[]
 > {
   const result = await db.restaurant.findMany({
     include: {
       cuisine: true,
       location: true,
+      reviews: true,
     },
   });
   return result;
 }
 
-export const getRestaurantsBy = async (query: {
-  location?: string;
-  cuisine?: string;
-  price?: PRICE;
-} = { location: "", cuisine: "" }) => {
-  const select = {
-    id: true,
-    name: true,
-    description: true,
-    price: true,
-    main_image: true,
-    location: true,
-    cuisine: true,
-    slug: true,
-  };
-
+export const getRestaurantsBy = async (
+  query: {
+    location?: string;
+    cuisine?: string;
+    price?: PRICE;
+  } = { location: "", cuisine: "" }
+) => {
   let where: any = {};
   if (query.location && query.location !== "") {
     where.location = {
@@ -54,15 +47,17 @@ export const getRestaurantsBy = async (query: {
   }
 
   const restaurants = await db.restaurant.findMany({
-    select,
     where,
+    include: {
+      cuisine: true,
+      location: true,
+      reviews: true,
+    },
   });
   return restaurants;
 };
 
-export const getRestaurantBySlug = async (
-  slug: string,
-): Promise<any> => {
+export const getRestaurantBySlug = async (slug: string): Promise<any> => {
   const restaurant = await db.restaurant.findUnique({
     where: {
       slug,
