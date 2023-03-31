@@ -57,17 +57,15 @@ export const getRestaurantsBy = async (
   return restaurants;
 };
 
-export const getRestaurantBySlug = async (slug: string): Promise<any> => {
+export const getRestaurantBySlug = async (
+  slug: string
+): Promise<(Restaurant & { reviews: Review[] }) | null> => {
   const restaurant = await db.restaurant.findUnique({
     where: {
       slug,
     },
-    select: {
-      id: true,
-      name: true,
-      description: true,
-      images: true,
-      slug: true,
+    include: {
+      reviews: true,
     },
   });
   return restaurant;

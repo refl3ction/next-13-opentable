@@ -1,6 +1,7 @@
-import { RestaurantModel } from "./models/Restaurant";
-
-export function getRestaurantRating(restaurant: RestaurantModel) {
+import { Restaurant, Review } from "@prisma/client";
+export function getRestaurantRating(
+  restaurant: Restaurant & { reviews: Review[] }
+) {
   const { reviews } = restaurant;
 
   if (!reviews) {
